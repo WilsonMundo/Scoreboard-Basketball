@@ -1,0 +1,17 @@
+<header class="flex items-center justify-between bg-slate-900 text-white px-4 py-3">
+  <div class="text-lg font-semibold">Mi Tablero</div>
+  <nav class="space-x-4">
+    <a routerLink="/" routerLinkActive="underline font-semibold" [routerLinkActiveOptions]="{ exact: true }"
+       class="text-slate-200 hover:text-white">Inicio</a>
+    <a routerLink="/games/setup" routerLinkActive="underline font-semibold"
+       class="text-slate-200 hover:text-white">Crear juego</a>
+  </nav>
+</header>
+
+<main class="p-4 min-h-[calc(100dvh-7rem)]">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="text-sm text-slate-600 px-4 py-3 bg-slate-100">
+  © {{ currentYear }} – Proyecto Angular + .NET
+</footer>

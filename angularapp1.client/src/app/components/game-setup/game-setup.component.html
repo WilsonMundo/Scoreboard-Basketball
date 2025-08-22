@@ -1,0 +1,39 @@
+<div class="mx-auto max-w-xl p-4">
+  <div class="card">
+    <div class="card-header">
+      <h1 class="text-xl font-semibold">Crear juego</h1>
+      <p class="text-sm text-slate-500">Configura equipos y duración del cuarto.</p>
+    </div>
+
+    <form class="card-body space-y-4" (ngSubmit)="create()" #f="ngForm">
+      <div>
+        <label class="block text-sm font-medium mb-1">Equipo Local</label>
+        <input class="input" name="homeName" [(ngModel)]="form().homeName" required />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Equipo Visitante</label>
+        <input class="input" name="awayName" [(ngModel)]="form().awayName" required />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Segundos por cuarto</label>
+        <input type="number" min="60" class="input" name="quarterSeconds"
+               [(ngModel)]="form().quarterSeconds" required />
+        <p class="text-xs text-slate-500 mt-1">Ej: 600 = 10 minutos</p>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" class="btn-outline"
+                (click)="form.set({homeName:'', awayName:'', quarterSeconds:600})">
+          Limpiar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="f.invalid || loading()">
+          {{ loading() ? 'Creando…' : 'Crear juego' }}
+        </button>
+      </div>
+
+      <p *ngIf="error()" class="text-sm text-red-600">{{ error() }}</p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="mx-auto max-w-3xl p-4">
+  <div class="card">
+    <div class="card-header flex items-center justify-between">
+      <h1 class="text-xl font-semibold">Juego #{{ id() }}</h1>
+      <span class="text-sm text-slate-500" *ngIf="saving()">Guardando…</span>
+    </div>
+
+    <div class="card-body space-y-4">
+      <p *ngIf="loading()">Cargando…</p>
+      <p *ngIf="error()" class="text-red-600">{{ error() }}</p>
+
+      <ng-container *ngIf="game() as g">
+        <!-- Scoreboard -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 rounded-lg border border-slate-200">
+            <div class="text-sm text-slate-500">Local</div>
+            <div class="text-2xl font-bold">{{ g.home?.name }}</div>
+            <div class="text-3xl font-extrabold mt-1">{{ g.home?.score ?? 0 }}</div>
+
+            <!-- ControlPanel Home -->
+            <div class="mt-3 flex flex-wrap gap-2">
+              <button class="btn-outline" (click)="changeScore(g.home, -1)">-1</button>
+              <button class="btn-primary" (click)="changeScore(g.home, +1)">+1</button>
+              <button class="btn-primary" (click)="changeScore(g.home, +2)">+2</button>
+              <button class="btn-primary" (click)="changeScore(g.home, +3)">+3</button>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-lg border border-slate-200">
+            <div class="text-sm text-slate-500">Visitante</div>
+            <div class="text-2xl font-bold">{{ g.away?.name }}</div>
+            <div class="text-3xl font-extrabold mt-1">{{ g.away?.score ?? 0 }}</div>
+
+            <!-- ControlPanel Away -->
+            <div class="mt-3 flex flex-wrap gap-2">
+              <button class="btn-outline" (click)="changeScore(g.away, -1)">-1</button>
+              <button class="btn-primary" (click)="changeScore(g.away, +1)">+1</button>
+              <button class="btn-primary" (click)="changeScore(g.away, +2)">+2</button>
+              <button class="btn-primary" (click)="changeScore(g.away, +3)">+3</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metadatos -->
+        <div class="pt-2 text-sm text-slate-600">
+          Status: <span class="font-medium">{{ g.status }}</span> ·
+          Cuarto: <span class="font-medium">{{ g.quarter }}</span> ·
+          Segundos por cuarto: <span class="font-medium">{{ g.quarterSeconds }}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
