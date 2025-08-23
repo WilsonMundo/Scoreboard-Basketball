@@ -1,3 +1,12 @@
+<!-- Pill de estado del hub -->
+<span class="text-xs px-2 py-1 rounded"
+      [class.bg-green-100]="realtime.state() === HubConnectionState.Connected"
+      [class.bg-yellow-100]="realtime.state() === HubConnectionState.Connecting || realtime.state() === HubConnectionState.Reconnecting"
+      [class.bg-red-100]="realtime.state() === HubConnectionState.Disconnected">
+  {{ stateLabel() }}
+</span>
+
+<app-notification [message]="notification()"></app-notification>
 <div class="mx-auto max-w-3xl p-4">
   <div class="card">
     <div class="card-header flex items-center justify-between">
@@ -30,11 +39,24 @@
 
             <div class="text-3xl font-extrabold mt-3">{{ g.home?.score ?? 0 }}</div>
             <div class="mt-3 flex flex-wrap gap-2">
-              <button class="btn-outline" (click)="changeScore(g.home, -1)" [disabled]="saving()">-1</button>
-              <button class="btn-primary" (click)="changeScore(g.home,  1)" [disabled]="saving()">+1</button>
-              <button class="btn-primary" (click)="changeScore(g.home,  2)" [disabled]="saving()">+2</button>
-              <button class="btn-primary" (click)="changeScore(g.home,  3)" [disabled]="saving()">+3</button>
+              <button class="btn-outline" (click)="changeScore(g.home, -1)" [disabled]="isFinished(g)">-1</button>
+              <button class="btn-primary" (click)="changeScore(g.home,  1)" [disabled]="isFinished(g)">+1</button>
+              <button class="btn-primary" (click)="changeScore(g.home,  2)" [disabled]="isFinished(g)">+2</button>
+              <button class="btn-primary" (click)="changeScore(g.home,  3)" [disabled]="isFinished(g)">+3</button>
             </div>
+
+            <div class="flex items-center gap-2">
+
+              <div class="mt-2 text-sm text-slate-600">
+                Faltas: <span class="font-semibold">{{ g.home?.fouls ?? 0 }}</span>
+              </div>
+              <div class="mt-2 flex gap-2">
+                <button class="btn-outline" (click)="changeFouls(g.home, -1)" [disabled]="saving() || isFinished(g)">- Falta</button>
+                <button class="btn-outline" (click)="changeFouls(g.home, +1)" [disabled]="saving() || isFinished(g)">+ Falta</button>
+              </div>
+
+            </div>
+
           </div>
 
           <!-- AWAY -->
@@ -54,31 +76,44 @@
 
             <div class="text-3xl font-extrabold mt-3">{{ g.away?.score ?? 0 }}</div>
             <div class="mt-3 flex flex-wrap gap-2">
-              <button class="btn-outline" (click)="changeScore(g.away, -1)" [disabled]="saving()">-1</button>
-              <button class="btn-primary" (click)="changeScore(g.away,  1)" [disabled]="saving()">+1</button>
-              <button class="btn-primary" (click)="changeScore(g.away,  2)" [disabled]="saving()">+2</button>
-              <button class="btn-primary" (click)="changeScore(g.away,  3)" [disabled]="saving()">+3</button>
+              <button class="btn-outline" (click)="changeScore(g.away, -1)" [disabled]="isFinished(g)">-1</button>
+              <button class="btn-primary" (click)="changeScore(g.away,  1)" [disabled]="isFinished(g)">+1</button>
+              <button class="btn-primary" (click)="changeScore(g.away,  2)" [disabled]="isFinished(g)">+2</button>
+              <button class="btn-primary" (click)="changeScore(g.away,  3)" [disabled]="isFinished(g)">+3</button>
+            </div>
+            <div class="flex items-center gap-2">
+
+              <div class="mt-2 text-sm text-slate-600">
+                Faltas: <span class="font-semibold">{{ g.away?.fouls ?? 0 }}</span>
+              </div>
+              <div class="mt-2 flex gap-2">
+                <button class="btn-outline" (click)="changeFouls(g.away, -1)" [disabled]="saving() || isFinished(g)">- Falta</button>
+                <button class="btn-outline" (click)="changeFouls(g.away, +1)" [disabled]="saving() || isFinished(g)">+ Falta</button>
+              </div>
+
             </div>
           </div>
+          
+
 
 
           <!--<div class="md:col-span-2">
-            <div class="rounded-lg border border-slate-200 p-4 max-w-md mx-auto
-                  flex flex-col items-center gap-3">
-              <div class="text-4xl font-extrabold tabular-nums tracking-tight">
-                {{ formatClock(g.remainingSeconds) }}
-              </div>
+    <div class="rounded-lg border border-slate-200 p-4 max-w-md mx-auto
+          flex flex-col items-center gap-3">
+      <div class="text-4xl font-extrabold tabular-nums tracking-tight">
+        {{ formatClock(g.remainingSeconds) }}
+      </div>
 
-              <div class="flex gap-2">
-                <button class="btn-outline" (click)="onReset()" [disabled]="saving()">Reset</button>
-                <button class="btn-primary" (click)="onStart()" [disabled]="saving() || g.isTimerRunning">Start</button>
-                <button class="btn-outline" (click)="onPause()" [disabled]="saving() || !g.isTimerRunning">Pause</button>
+      <div class="flex gap-2">
+        <button class="btn-outline" (click)="onReset()" [disabled]="saving()">Reset</button>
+        <button class="btn-primary" (click)="onStart()" [disabled]="saving() || g.isTimerRunning">Start</button>
+        <button class="btn-outline" (click)="onPause()" [disabled]="saving() || !g.isTimerRunning">Pause</button>
 
 
-              </div>
+      </div>
 
-            </div>
-          </div>-->
+    </div>
+  </div>-->
           <div class="flex items-center gap-2">
 
             <button class="btn-outline"
@@ -112,13 +147,7 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-2">
-
-
-
-        </div>
-
-
+      
 
         <!-- Banner -->
         <div *ngIf="isFinished(g)" class="mt-4 p-3 rounded-md bg-green-100 text-green-800 font-semibold text-center">

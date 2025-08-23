@@ -20,6 +20,7 @@
         public bool IsHome { get; set; }
         public int Score { get; set; }
         public int FoulsTeam { get; set; }
+        public int Fouls { get; set; }
         public string? LogoUrl { get; set; }
     }
 

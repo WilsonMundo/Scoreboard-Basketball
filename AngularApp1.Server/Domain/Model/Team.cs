@@ -8,8 +8,11 @@
         public bool IsHome { get; set; }  // true = local, false = visitante
         public int Score { get; set; }    // útil para el siguiente slice
         public int FoulsTeam { get; set; }
+        public int Fouls { get; set; }   
         public string? LogoUrl { get; set; }
 
         public Game Game { get; set; } = default!;
+
+
     }
 }

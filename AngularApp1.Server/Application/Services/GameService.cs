@@ -1,9 +1,11 @@
 ﻿using AngularApp1.Server.Application.DTO.Game;
 using AngularApp1.Server.Application.DTO.Score;
+using AngularApp1.Server.Application.Hubs;
 using AngularApp1.Server.Application.Interfaces;
 using AngularApp1.Server.Domain.Interface;
 using AngularApp1.Server.Domain.Model;
 using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AngularApp1.Server.Application.Services
 {
@@ -12,10 +14,12 @@ namespace AngularApp1.Server.Application.Services
         private readonly IGameRepository _repo;
         private readonly IMapper _mapper;
         private readonly IImageService _images;
-        public GameService(IGameRepository repo, IMapper mapper, IImageService images)
+        private readonly IHubContext<GameHub> _hub;
+        public GameService(IGameRepository repo, IMapper mapper, IImageService images, IHubContext<GameHub> gameH)
         {
             _repo = repo; _mapper = mapper;
             _images = images;
+            _hub = gameH;
         }
 
 
@@ -40,11 +44,14 @@ namespace AngularApp1.Server.Application.Services
             await _repo.AddAsync(game);
             await _repo.SaveChangesAsync();
 
+            MaterializeTimer(game, DateTime.UtcNow);
 
 
-    
 
-            return _mapper.Map<GameDto>(game);
+            var dtoGame = _mapper.Map<GameDto>(game);
+            await _hub.Clients.Group($"game:{game.Id}").SendAsync("GameUpdated", dtoGame);
+
+            return dtoGame;
         }
 
 
@@ -80,7 +87,10 @@ namespace AngularApp1.Server.Application.Services
             team.Score = newTeamScore;
 
             await _repo.SaveChangesAsync();
-            return _mapper.Map<GameDto>(game);
+            var dtoGame = _mapper.Map<GameDto>(game);
+            await _hub.Clients.Group($"game:{game.Id}").SendAsync("GameUpdated", dtoGame);
+
+            return dtoGame;
         }
         public async Task<GameDto> UploadTeamLogoAsync(long gameId, long teamId, IFormFile file)
         {

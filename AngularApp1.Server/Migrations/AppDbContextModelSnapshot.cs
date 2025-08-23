@@ -99,6 +99,9 @@ namespace AngularApp1.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("Fouls")
+                        .HasColumnType("int");
+
                     b.Property<int>("FoulsTeam")
                         .HasColumnType("int");
 

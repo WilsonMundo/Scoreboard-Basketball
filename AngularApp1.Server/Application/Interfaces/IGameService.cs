@@ -15,5 +15,6 @@ namespace AngularApp1.Server.Application.Interfaces
         Task<GameDto> NextQuarterAsync(long gameId);
         Task<GameDto> PrevQuarterAsync(long gameId);
         Task<GameDto> FinishAsync(long gameId);
+        Task<GameDto> UpdateFoulsAsync(long gameId, long teamId, int delta);
     }
 }

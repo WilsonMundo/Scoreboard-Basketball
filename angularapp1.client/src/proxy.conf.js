@@ -13,7 +13,8 @@ const PROXY_CONFIG = [
     target,
     secure: false,
     ws: true 
-  }
+  },
+  { context: ['/hubs'], target, secure: false, ws: true }
 ]
 
 module.exports = PROXY_CONFIG;

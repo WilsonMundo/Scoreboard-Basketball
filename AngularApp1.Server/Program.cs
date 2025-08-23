@@ -1,3 +1,4 @@
+using AngularApp1.Server.Application.Hubs;
 using AngularApp1.Server.Application.Interfaces;
 using AngularApp1.Server.Application.Mapping;
 using AngularApp1.Server.Application.Services;
@@ -5,7 +6,6 @@ using AngularApp1.Server.Domain.Interface;
 using AngularApp1.Server.Infrastructure;
 using AngularApp1.Server.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<AppDbContext>(o =>
 o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -33,7 +34,7 @@ var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
+app.MapHub<GameHub>("/hubs/game");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

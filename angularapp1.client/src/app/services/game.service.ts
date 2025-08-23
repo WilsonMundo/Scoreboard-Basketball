@@ -15,6 +15,7 @@ export interface TeamDto {
   isHome: boolean;
   score: number;
   foulsTeam: number;
+  fouls: number;
   logoUrl?: string | null;
 }
 export interface GameDto {
@@ -80,5 +81,8 @@ export class GameService {
 
   finish(gameId: number) {
     return this.http.post<GameDto>(`${this.baseUrl}/${gameId}/finish`, {});
+  }
+  updateFouls(gameId: number, teamId: number, delta: number) {
+    return this.http.post<GameDto>(`/api/fouls/${gameId}/teams/${teamId}/fouls`, delta);
   }
 }

@@ -23,7 +23,9 @@ namespace AngularApp1.Server.Infrastructure
                 b.Property(t => t.Id).ValueGeneratedOnAdd();
                 b.Property(t => t.Name).HasMaxLength(100).IsRequired();
                 b.Property(t => t.IsHome).IsRequired();
+                b.Property(t => t.Fouls);
                 b.Property(t => t.LogoUrl).HasMaxLength(256);
+                
             });
             modelBuilder.Entity<QuarterScore>(b =>
             {
