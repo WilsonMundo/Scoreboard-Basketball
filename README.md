@@ -1,6 +1,6 @@
 # Scoreboard-Basketball
 Proyecto de universidad Scoreboard de Basketball
-
+```
 /AngularApp1
 ├─ AngularApp1.server/                  # API ASP.NET Core 8
 │  ├─ Controllers/
@@ -14,7 +14,7 @@ Proyecto de universidad Scoreboard de Basketball
 │  │  ├─ Persistence/ (AppDbContext, repos EF)
 │  │  └─ Services/ (implementaciones)
 │  ├─ Profiles/ (AutoMapper)
-│  ├─ wwwroot/logos/ (archivos estáticos de logos)
+│  ├─ wwwroot/logos/ (archivos estáticos de logos
 │  └─ Program.cs (UseStaticFiles, Swagger, CORS/SignalR opcional)
 └─ angularapp1.client/                  # Angular 18
    ├─ src/app/
@@ -27,7 +27,10 @@ Proyecto de universidad Scoreboard de Basketball
    │  ├─ app.routes.ts / app.config.ts
    │  └─ styles.css (Tailwind)
    ├─ proxy.conf.js (proxy a /api y /logos)
+   |
    └─ tailwind.config.js
+```
+
 
 ✅ Funcionalidades
 
