@@ -1,9 +1,12 @@
 using AngularApp1.Server.Application.Interfaces;
+using AngularApp1.Server.Application.Mapping;
 using AngularApp1.Server.Application.Services;
 using AngularApp1.Server.Domain.Interface;
 using AngularApp1.Server.Infrastructure;
 using AngularApp1.Server.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,17 +17,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-
-app.UseDefaultFiles();
-app.UseStaticFiles();
 
 builder.Services.AddDbContext<AppDbContext>(o =>
 o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
+builder.Services.AddAutoMapper(cfg => {
+    cfg.AddProfile<GameProfile>();
+});
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+
+var app = builder.Build();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

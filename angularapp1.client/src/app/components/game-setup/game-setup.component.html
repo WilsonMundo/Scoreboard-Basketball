@@ -2,30 +2,49 @@
   <div class="card">
     <div class="card-header">
       <h1 class="text-xl font-semibold">Crear juego</h1>
-      <p class="text-sm text-slate-500">Configura equipos y duración del cuarto.</p>
+      <p class="text-sm text-slate-500">Configura equipos, duración y logos.</p>
     </div>
 
     <form class="card-body space-y-4" (ngSubmit)="create()" #f="ngForm">
       <div>
         <label class="block text-sm font-medium mb-1">Equipo Local</label>
         <input class="input" name="homeName" [(ngModel)]="form().homeName" required />
+        <div class="mt-2 flex items-center gap-3">
+          <div class="h-16 w-24 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden">
+            <img *ngIf="homePreview()" [src]="homePreview()!" alt="Logo local" class="max-h-full max-w-full object-contain" />
+            <span *ngIf="!homePreview()" class="text-xs text-slate-400">Sin logo</span>
+          </div>
+          <div>
+            <input type="file" id="home-file" class="hidden" accept="image/*" (change)="onPickHome($event)" />
+            <label for="home-file" class="btn-outline cursor-pointer">Elegir logo</label>
+          </div>
+        </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium mb-1">Equipo Visitante</label>
         <input class="input" name="awayName" [(ngModel)]="form().awayName" required />
+        <div class="mt-2 flex items-center gap-3">
+          <div class="h-16 w-24 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden">
+            <img *ngIf="awayPreview()" [src]="awayPreview()!" alt="Logo visitante" class="max-h-full max-w-full object-contain" />
+            <span *ngIf="!awayPreview()" class="text-xs text-slate-400">Sin logo</span>
+          </div>
+          <div>
+            <input type="file" id="away-file" class="hidden" accept="image/*" (change)="onPickAway($event)" />
+            <label for="away-file" class="btn-outline cursor-pointer">Elegir logo</label>
+          </div>
+        </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium mb-1">Segundos por cuarto</label>
-        <input type="number" min="60" class="input" name="quarterSeconds"
-               [(ngModel)]="form().quarterSeconds" required />
+        <input type="number" min="60" class="input" name="quarterSeconds" [(ngModel)]="form().quarterSeconds" required />
         <p class="text-xs text-slate-500 mt-1">Ej: 600 = 10 minutos</p>
       </div>
 
       <div class="flex items-center justify-end gap-3 pt-2">
         <button type="button" class="btn-outline"
-                (click)="form.set({homeName:'', awayName:'', quarterSeconds:600})">
+                (click)="form.set({homeName:'', awayName:'', quarterSeconds:600}); homeFile.set(null); awayFile.set(null); homePreview.set(null); awayPreview.set(null)">
           Limpiar
         </button>
         <button type="submit" class="btn-primary" [disabled]="f.invalid || loading()">
