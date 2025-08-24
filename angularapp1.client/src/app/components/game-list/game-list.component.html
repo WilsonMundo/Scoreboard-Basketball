@@ -1,0 +1,53 @@
+
+
+  <div class="mx-auto max-w-4xl p-4">
+    <div class="flex items-center justify-between mb-3">
+      <h1 class="text-xl font-semibold">Partidos</h1>
+      <a class="btn-primary" routerLink="/setup">➕ Nuevo juego</a>
+    </div>
+
+    <p *ngIf="loading()">Cargando…</p>
+    <p *ngIf="error()" class="text-red-600">{{ error() }}</p>
+
+    <div class="card" *ngIf="!loading()">
+      <div class="card-body p-0">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b">
+              <th class="text-left p-3">Juego</th>
+              <th class="text-left p-3">Equipos</th>
+              <th class="text-center p-3">Marcador</th>
+              <th class="text-center p-3">Estado</th>
+              <th class="text-right p-3">Creado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let g of items()" class="border-b hover:bg-slate-50">
+              <td class="p-3">
+                <a class="text-slate-900 underline" [routerLink]="['/games', g.id]">#{{ g.id }}</a>
+              </td>
+              <td class="p-3">
+                <div class="font-medium">{{ g.homeName }} <span class="text-slate-400">vs</span> {{ g.awayName }}</div>
+                <div class="text-xs text-slate-500">Q{{ g.quarter }}</div>
+              </td>
+              <td class="p-3 text-center font-semibold tabular-nums">
+                {{ g.homeScore }} – {{ g.awayScore }}
+              </td>
+              <td class="p-3 text-center">
+                <span class="px-2 py-1 rounded text-xs" [ngClass]="statusBadge(g.status)">{{ g.status }}</span>
+              </td>
+              <td class="p-3 text-right text-xs text-slate-500">
+                {{ g.createdAtUtc | date:'medium' }}
+              </td>
+            </tr>
+
+            <tr *ngIf="items().length === 0">
+              <td class="p-6 text-center text-slate-500" colspan="5">
+                No hay partidos aún. Crea uno con “Nuevo juego”.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

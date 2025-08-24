@@ -15,5 +15,10 @@ namespace AngularApp1.Server.Infrastructure.Repository
             .FirstOrDefaultAsync(g => g.Id == id);
         public async Task AddAsync(Game game) => await _db.Games.AddAsync(game);
         public Task SaveChangesAsync() => _db.SaveChangesAsync();
+        public async Task<List<Game>> GetAll()
+        {
+            return await _db.Games.Include(x => x.Teams)
+                .ToListAsync();   
+        }
     }
 }

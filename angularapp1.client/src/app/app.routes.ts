@@ -10,10 +10,12 @@ export const routes: Routes = [
         path: 'games/setup',
         loadComponent: () => import('./components/game-setup/game-setup.component').then(m => m.GameSetupComponent)
       },
+      { path: 'games/list', loadComponent: () => import('./components/game-list/game-list.component').then(m => m.GameListComponent) },
       {
         path: 'games/:id',
         loadComponent: () => import('./components/game/game.component').then(m => m.GameComponent)
       },
+      
       { path: '**', redirectTo: '' }
     ]
   }

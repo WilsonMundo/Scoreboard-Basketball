@@ -29,6 +29,18 @@ export interface GameDto {
   away?: TeamDto | null;
   box: QuarterPointsDto[];
 }
+export interface GameListItemDto {
+  id: number;
+  status: string;
+  quarter: number;
+  homeName?: string | null;
+  awayName?: string | null;
+  homeScore: number;
+  awayScore: number;
+  createdAtUtc: string;
+}
+
+
 export interface UpdateScoreDto { teamId: number; deltaPoints: number; }
 export const API_BASE = 'https://localhost:7022';
 
@@ -84,5 +96,8 @@ export class GameService {
   }
   updateFouls(gameId: number, teamId: number, delta: number) {
     return this.http.post<GameDto>(`/api/fouls/${gameId}/teams/${teamId}/fouls`, delta);
+  }
+  getAll() {
+    return this.http.get<GameListItemDto[]>(`${this.baseUrl}`);
   }
 }

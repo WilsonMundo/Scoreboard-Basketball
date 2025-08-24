@@ -9,5 +9,6 @@ namespace AngularApp1.Server.Domain.Interface
         public Task<Game?> GetAsync(long id);
         Task AddAsync(Game game);
         Task SaveChangesAsync();
+        Task<List<Game>> GetAll();
     }
 }

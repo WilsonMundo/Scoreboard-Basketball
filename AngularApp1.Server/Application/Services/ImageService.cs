@@ -3,6 +3,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace AngularApp1.Server.Application.Services
@@ -54,7 +55,7 @@ namespace AngularApp1.Server.Application.Services
 
             if (!hasAlpha && (ext.Equals(".jpg", StringComparison.OrdinalIgnoreCase) || ext.Equals(".jpeg", StringComparison.OrdinalIgnoreCase)))
             {
-                encoder = new JpegEncoder { Quality = jpegQuality, ColorType = JpegEncodingColor.Luminance };
+                encoder = new JpegEncoder { Quality = jpegQuality };
             }
             else if (!hasAlpha)
             {
@@ -74,6 +75,23 @@ namespace AngularApp1.Server.Application.Services
                     finalPath = Path.ChangeExtension(finalPath, ".png");
                 }
             }
+
+            // Tamaño de salida fijo (p. ej. 512x384 = 4:3 como tu caja 128x96)
+            var targetW = maxWidth;
+            var targetH = maxHeight;
+
+            // 1) Resize para que quepa dentro sin recortar (como contain)
+            var (rw, rh) = GetFitSize(image.Width, image.Height, targetW, targetH);
+            image.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Mode = ResizeMode.Max,           // ajusta dentro
+                Size = new Size(rw, rh),
+                Sampler = KnownResamplers.Bicubic
+            }));
+
+            // 2) Crear lienzo final fijo y centrar (letterbox/pillarbox)
+            using var canvas = new Image<Rgba32>(targetW, targetH, new Rgba32(248, 250, 252, 255)); // bg-slate-50 aprox
+            canvas.Mutate(x => x.DrawImage(image, new Point((targetW - rw) / 2, (targetH - rh) / 2), 1f));
 
             await image.SaveAsync(finalPath, encoder);
 

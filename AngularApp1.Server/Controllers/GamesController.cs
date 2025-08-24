@@ -14,6 +14,13 @@ namespace AngularApp1.Server.Controllers
         public GamesController(IGameService svc) => _svc = svc;
 
 
+        [HttpGet]
+        public async Task<ActionResult<IReadOnlyList<GameListItemDto>>> GetAll()
+        {
+            var items = await _svc.GetAllAsync();
+            return Ok(items);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateGameDto dto)
         {

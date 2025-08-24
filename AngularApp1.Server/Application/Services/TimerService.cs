@@ -213,5 +213,28 @@ namespace AngularApp1.Server.Application.Services
             await _hub.Clients.Group($"game:{game.Id}").SendAsync("GameUpdated", dto);
             return dto;
         }
+
+        public async Task<IReadOnlyList<GameListItemDto>> GetAllAsync()
+        {
+            var games = await _repo.GetAll();
+                           
+
+            return games.Select(g =>
+            {
+                var home = g.Teams.FirstOrDefault(t => t.IsHome);
+                var away = g.Teams.FirstOrDefault(t => !t.IsHome);
+                return new GameListItemDto
+                {
+                    Id = g.Id,
+                    Status = g.Status,
+                    Quarter = g.Quarter,
+                    HomeName = home?.Name,
+                    AwayName = away?.Name,
+                    HomeScore = home?.Score ?? 0,
+                    AwayScore = away?.Score ?? 0,
+                    CreatedAtUtc = g.CreatedAtUtc
+                };
+            }).ToList();
+        }
     }
 }
