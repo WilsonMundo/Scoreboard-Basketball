@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 export interface QuarterPointsDto {
   quarter: number;
@@ -42,7 +43,7 @@ export interface GameListItemDto {
 
 
 export interface UpdateScoreDto { teamId: number; deltaPoints: number; }
-export const API_BASE = 'https://localhost:7022';
+export const API_BASE = `${environment.apiBase}`;
 
 
 @Injectable({ providedIn: 'root' })

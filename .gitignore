@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.env
+angularapp1_1.0.2.tar.gz
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

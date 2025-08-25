@@ -8,6 +8,7 @@ export class RealtimeService {
   async connect(baseUrl: string) {
     if (this.hub?.state === signalR.HubConnectionState.Connected) return;
     this.hub = new signalR.HubConnectionBuilder()
+       .configureLogging(signalR.LogLevel.Warning)
       .withUrl(`${baseUrl}/hubs/game`, { withCredentials: true }) // usa proxy o URL absoluta
       .withAutomaticReconnect()
       .build();
