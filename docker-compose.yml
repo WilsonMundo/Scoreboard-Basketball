@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: AngularApp1.Server/Dockerfile  
+    image: angularapp1
+    container_name: angularapp1container
+    ports:
+      - "7000:8080"                    # host:contenedor
+    environment:
+      ASPNETCORE_URLS: "http://+:8080"
+      # SQL en la PC del host, puerto 42280
+      ConnectionStrings__Default: "Server=${SA_SERVER};Database=Scoreboard;User ID=${S_USER};Password=${SA_PASSWORD};Encrypt=True;TrustServerCertificate=True"
