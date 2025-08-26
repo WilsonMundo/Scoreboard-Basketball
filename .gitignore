@@ -11,7 +11,10 @@
 *.sln.docstates
 *.env
 angularapp1_1.0.2.tar.gz
-
+# Ignorar todos los archivos JPG y PNG
+*.jpg
+*.png
+*.gif
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
