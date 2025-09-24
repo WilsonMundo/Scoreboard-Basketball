@@ -5,27 +5,112 @@ using AngularApp1.Server.Application.Services;
 using AngularApp1.Server.Domain.Interface;
 using AngularApp1.Server.Infrastructure;
 using AngularApp1.Server.Infrastructure.Repository;
+using AngularApp1.Server.Middelware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Host.UseSerilog();
 
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<AppDbContext>(o =>
 o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddAutoMapper(cfg => {
+builder.Services.AddAutoMapper(cfg =>
+{
     cfg.AddProfile<GameProfile>();
 });
+var cadenaConexion = builder.Configuration["SQLConnection"]
+    ?? throw new InvalidOperationException("Cadena de conexión vacía (SQLConnection).");
+
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("Falta Jwt:Key en configuración.");
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+builder.Services.AddScoped<DatabaseConnectionManager>();
+builder.Services.AddDbContext<RegisterDBContext>((serviceProvider, options) =>
+{
+    var connectionManager = serviceProvider.GetRequiredService<DatabaseConnectionManager>();
+    var connectionString = connectionManager.ValidateConnectionString(cadenaConexion, "UserBiciLink");
+    options.UseSqlServer(connectionString);
+});
+
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+{
+    var connectionManager = serviceProvider.GetRequiredService<DatabaseConnectionManager>();
+    var connectionString = connectionManager.ValidateConnectionString(cadenaConexion, "Scoreboard");
+    options.UseSqlServer(connectionString);
+});
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<RegisterDBContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+
+        ValidateIssuer = !string.IsNullOrEmpty(jwtIssuer),
+        ValidIssuer = jwtIssuer,
+
+        ValidateAudience = !string.IsNullOrEmpty(jwtAudience),
+        ValidAudience = jwtAudience,
+
+        ValidateLifetime = true,
+
+
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+
+        ClockSkew = TimeSpan.Zero
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["AuthToken"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+builder.Services.AddAuthorization();
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Scoreboard API",
+        Version = "v1"
+    });
+});
+
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameService, GameService>();
@@ -41,19 +126,19 @@ var fwd = new ForwardedHeadersOptions
 };
 
 
-// Con proxies delante, confía en los encabezados
+// Con proxies delante, confíar en los encabezados
 fwd.KnownNetworks.Clear();
 fwd.KnownProxies.Clear();
 app.UseForwardedHeaders(fwd);
 
 
-if (enableSwagger)
+if (enableSwagger || app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(o =>
     {
         o.RoutePrefix = "docs"; // /docs en vez de /swagger
-        o.SwaggerEndpoint("/swagger/v1/swagger.json", "Scoreboard API v1");
+        o.SwaggerEndpoint("../swagger/v1/swagger.json", "Scoreboard API v1");
     });
 }
 
@@ -61,15 +146,10 @@ if (enableSwagger)
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapHub<GameHub>("/hubs/game");
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -83,3 +163,16 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+try
+{
+   
+    app.Run();
+}
+catch(Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
