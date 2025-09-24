@@ -212,8 +212,9 @@ export class GameComponent {
   }
   formatClock(total: number | undefined | null): string {
     const t = Math.max(0, total ?? 0);
+    const adjusted = t - (t % 3);
     const m = Math.floor(t / 60).toString().padStart(2, '0');
-    const s = (t % 60).toString().padStart(2, '0');
+    const s = (adjusted % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
   }
 

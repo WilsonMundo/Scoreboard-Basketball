@@ -20,7 +20,7 @@ export class GameSetupComponent {
   private router = inject(Router);
 
     
-  form = signal<CreateGameDto>({ homeName: '', awayName: '', quarterSeconds: 600 });
+  form = signal<CreateGameDto>({ homeName: '', awayName: '', quarterSeconds: 600});
   loading = signal(false);
   error = signal<string | null>(null);
 
