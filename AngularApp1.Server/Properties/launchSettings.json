@@ -3,11 +3,14 @@
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "docs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
-        "Connection": "Data Source=LOCALHOST,42280;Initial Catalog={xxx};Persist Security Info=True;User ID=sa; Password=smart2010bit;Integrated Security=True;Trust Server Certificate=True"
+        "SQLConnection": "Data Source=LOCALHOST,42280;Initial Catalog={XXXXX};Persist Security Info=True;User ID=sa; Password=smart2010bit;Integrated Security=True;Trust Server Certificate=True",
+        "Jwt:Key": "POWIEPOQWEPQWILDK33ASLKW3094230948DJALSKJDW980284023984DPEOEODMDJDK",
+        "Jwt:Audience": "https://localhost:54702/",
+        "Jwt:Issuer": "https://localhost:7022/"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7022;http://localhost:5183"
@@ -15,7 +18,7 @@
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "docs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
@@ -26,7 +29,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "docs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"

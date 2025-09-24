@@ -2,12 +2,14 @@
 using AngularApp1.Server.Application.DTO.Score;
 using AngularApp1.Server.Application.DTO.Timer;
 using AngularApp1.Server.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AngularApp1.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class GamesController : ControllerBase
     {
         private readonly IGameService _svc;
