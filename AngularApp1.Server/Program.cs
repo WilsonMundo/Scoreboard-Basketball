@@ -38,10 +38,10 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<GameProfile>();
 });
 var cadenaConexion = builder.Configuration["SQLConnection"]
-    ?? throw new InvalidOperationException("Cadena de conexión vacía (SQLConnection).");
+    ?? "";
 
 var jwtKey = builder.Configuration["Jwt:Key"]
-    ?? throw new InvalidOperationException("Falta Jwt:Key en configuración.");
+    ?? "";
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
 
