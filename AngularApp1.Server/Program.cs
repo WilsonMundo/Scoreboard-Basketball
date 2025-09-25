@@ -1,10 +1,14 @@
+using AngularApp1.Server;
 using AngularApp1.Server.Application.Hubs;
 using AngularApp1.Server.Application.Interfaces;
 using AngularApp1.Server.Application.Mapping;
 using AngularApp1.Server.Application.Services;
+using AngularApp1.Server.Application.Services.Auth;
 using AngularApp1.Server.Domain.Interface;
 using AngularApp1.Server.Infrastructure;
 using AngularApp1.Server.Infrastructure.Repository;
+using AngularApp1.Server.Infrastructure.Repository.Auth;
+using AngularApp1.Server.Infrastructure.Utils;
 using AngularApp1.Server.Middelware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -111,10 +115,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
+builder.Services.AddScoped<ResponseService>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUtilsRepository,UtilsRepository>();
+
 
 var app = builder.Build();
 var enableSwagger = app.Configuration.GetValue<bool>("Swagger:Enabled");
