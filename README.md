@@ -70,3 +70,55 @@ Proyecto de universidad Scoreboard de Basketball
 }
 ```
 
+## 1. Base de Datos
+
+La aplicación usa **SQL Server** (puede ajustarse a otro provider si es necesario).  
+La base de datos debe llamarse:
+
+```text
+Scoreboard
+```
+## 2.Variables de Entorno
+En las varaibles de entorno  se debe crear las siguientes variables
+- **Jwt:Key**
+  *Clave secreta utilizada para firmar y validar los tokens JWT.*
+
+  Debe ser una cadena segura, larga y difícil de adivinar.
+
+Si esta clave cambia, todos los tokens emitidos anteriormente dejan de ser válidos.
+
+Ejemplo de valor:
+
+```ruby
+Jwt:Key=MI_CLAVE_SUPER_SECRETA_123456
+```
+- **Jwt:Issuer**
+   *Identificador del emisor del token.*
+  
+  Normalmente es la URL o nombre de la aplicación que genera el token.
+
+Se utiliza para validar que el token fue emitido por una fuente confiable.
+
+Ejemplo de valor:
+
+```ruby
+Jwt:Issuer=https://mi-api.com
+```
+- **Jwt:Audience**
+  *Identificador de la audiencia del token.*
+
+  Indica quién debe aceptar y procesar el token.
+
+Protege contra el uso del token en aplicaciones no autorizadas.
+
+Ejemplo de valor:
+
+```ruby
+Jwt:Audience=https://mi-frontend.com
+```
+``` csharp
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+```
+
