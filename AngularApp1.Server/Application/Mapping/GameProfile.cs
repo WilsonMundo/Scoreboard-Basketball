@@ -1,4 +1,5 @@
 ﻿using AngularApp1.Server.Application.DTO.Game;
+using AngularApp1.Server.Application.DTO.Players;
 using AngularApp1.Server.Domain.Model;
 using AutoMapper;
 
@@ -13,6 +14,9 @@ namespace AngularApp1.Server.Application.Mapping
             .ForMember(d => d.Home, m => m.MapFrom(s => s.Teams.FirstOrDefault(t => t.IsHome)))
             .ForMember(d => d.Away, m => m.MapFrom(s => s.Teams.FirstOrDefault(t => !t.IsHome)))
             .ForMember(d => d.Box, m => m.MapFrom(s => BuildBox(s)));
+            CreateMap<TeamCatalog, TeamDto>();
+            CreateMap<Player, PlayerDto>()
+                        .ForMember(d => d.TeamName, m => m.MapFrom(s => s.Team != null ? s.Team.Name : null));
         }
         private static IReadOnlyList<QuarterPointsDto> BuildBox(Game g)
         {

@@ -17,9 +17,7 @@
             {
                 conexion = baseConnectionString.Replace("{XXXXX}", databaseName);
             }
-            else
-                throw new Exception("Cadena de conexion vacia");
-
+           
             return conexion;
         }
 

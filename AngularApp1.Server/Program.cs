@@ -38,10 +38,10 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<GameProfile>();
 });
 var cadenaConexion = builder.Configuration["SQLConnection"]
-    ?? throw new InvalidOperationException("Cadena de conexión vacía (SQLConnection).");
+    ?? "";
 
 var jwtKey = builder.Configuration["Jwt:Key"]
-    ?? throw new InvalidOperationException("Falta Jwt:Key en configuración.");
+    ?? "";
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
 
@@ -123,6 +123,14 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUtilsRepository,UtilsRepository>();
 
+builder.Services.AddScoped<ITeamCatalogRepository, TeamCatalogRepository>();
+builder.Services.AddScoped<ITeamCatalogService, TeamCatalogService>();
+
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+
+builder.Services.AddScoped<IGameAdminRepository, GameAdminRepository>();
+builder.Services.AddScoped<IAdminMatchService, AdminMatchService>();
 
 var app = builder.Build();
 var enableSwagger = app.Configuration.GetValue<bool>("Swagger:Enabled");

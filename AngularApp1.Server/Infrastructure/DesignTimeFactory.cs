@@ -13,20 +13,13 @@ namespace AngularApp1.Server.Infrastructure
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile("appsettings.Development.json", optional: true)
+                 .AddUserSecrets<DesignTimeFactory>(optional: true)
                 .Build();
 
             var connString = config.GetConnectionString("Default");
-            var cadenaConexion = config["SQLConnection"]
-               ?? throw new InvalidOperationException("Cadena de conexión vacía (SQLConnection).");
 
-            var fakeAccessor = new HttpContextAccessor();
-
-            var connectionManager = new DatabaseConnectionManager(fakeAccessor);
-            var connectionString = connectionManager.ValidateConnectionString(cadenaConexion, "Scoreboard");
-
-            // 4) Construir las opciones del DbContext
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlServer(connectionString)
+                .UseSqlServer(connString)
                 .Options;
 
             return new AppDbContext(options);
