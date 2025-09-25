@@ -129,6 +129,9 @@ builder.Services.AddScoped<ITeamCatalogService, TeamCatalogService>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 
+builder.Services.AddScoped<IGameAdminRepository, GameAdminRepository>();
+builder.Services.AddScoped<IAdminMatchService, AdminMatchService>();
+
 var app = builder.Build();
 var enableSwagger = app.Configuration.GetValue<bool>("Swagger:Enabled");
 var fwd = new ForwardedHeadersOptions
