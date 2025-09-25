@@ -1,5 +1,6 @@
 ﻿using AngularApp1.Server.Application.DTO;
 using AngularApp1.Server.Application.DTO.Auth;
+using AngularApp1.Server.Application.Interfaces;
 using AngularApp1.Server.Domain.Interface;
 using AngularApp1.Server.Domain.ModelRegister;
 using AutoMapper;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace AngularApp1.Server.Application.Services.Auth
 {
-    public class AuthService
+    public class AuthService: IAuthService
     {
         private readonly PasswordHasher<object> _passwordHasher = new PasswordHasher<object>();
         private readonly IConfiguration _configuration;

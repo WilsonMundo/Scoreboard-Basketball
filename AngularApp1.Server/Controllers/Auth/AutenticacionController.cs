@@ -17,11 +17,11 @@ namespace AngularApp1.Server.Controllers.Auth
     public class AutenticacionController:ControllerBase
     {
         private readonly ResponseService _response;
-        private readonly IAuthService _iIAuthService;
+        private readonly IAuthService _IAuthService;
         public AutenticacionController(ResponseService response, IAuthService iAuthService)
         {
             this._response = response;
-            this._iIAuthService = iAuthService;
+            this._IAuthService = iAuthService;
         }
 
         [HttpGet("auth/verificar")]
@@ -55,7 +55,7 @@ namespace AngularApp1.Server.Controllers.Auth
         {
             try
             {
-                ResultAPI<UserToken?> userToken = await _iIAuthService.ValidateUser(userInfo);
+                ResultAPI<UserToken?> userToken = await _IAuthService.ValidateUser(userInfo);
                 if (userToken.Result != null)
                 {
                     var cookieOptions = new CookieOptions
@@ -89,7 +89,7 @@ namespace AngularApp1.Server.Controllers.Auth
         {
             try
             {
-                ResultAPI<UserToken?> userToken = await _iIAuthService.ValidateUser(userInfo);
+                ResultAPI<UserToken?> userToken = await _IAuthService.ValidateUser(userInfo);
                 if (userToken.Result != null)
                 {
                     return _response.CreateResponse(userToken);
@@ -110,7 +110,7 @@ namespace AngularApp1.Server.Controllers.Auth
         [AllowAnonymous]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegister user)
         {
-            ResultAPI<object> result = await _iIAuthService.RegisterUser(user);
+            ResultAPI<object> result = await _IAuthService.RegisterUser(user);
             return _response.CreateResponse(result);
         }
 
