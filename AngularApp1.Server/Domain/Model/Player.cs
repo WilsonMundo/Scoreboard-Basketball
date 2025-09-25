@@ -10,5 +10,7 @@
         public int Age { get; set; }
         public string? Nationality { get; set; }
         public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+        public long? TeamId { get; set; }
+        public TeamCatalog? Team { get; set; }
     }
 }

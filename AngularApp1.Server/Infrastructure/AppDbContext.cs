@@ -79,6 +79,11 @@ namespace AngularApp1.Server.Infrastructure
                 b.Property(x => x.Position).HasMaxLength(50);
                 b.Property(x => x.Nationality).HasMaxLength(80);
                 b.Property(x => x.HeightMeters).HasPrecision(4, 2); // ej. 2.05
+
+                b.HasOne(x => x.Team)
+                .WithMany() 
+                .HasForeignKey(x => x.TeamId)
+                .OnDelete(DeleteBehavior.SetNull);
             });
 
 

@@ -123,6 +123,11 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUtilsRepository,UtilsRepository>();
 
+builder.Services.AddScoped<ITeamCatalogRepository, TeamCatalogRepository>();
+builder.Services.AddScoped<ITeamCatalogService, TeamCatalogService>();
+
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 var app = builder.Build();
 var enableSwagger = app.Configuration.GetValue<bool>("Swagger:Enabled");
