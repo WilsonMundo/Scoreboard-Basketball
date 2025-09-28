@@ -1,0 +1,113 @@
+<div class="p-6 max-w-lg mx-auto bg-white rounded shadow">
+  <h2 class="text-2xl font-bold mb-4">
+    {{ id ? 'Editar Jugador' : 'Nuevo Jugador' }}
+  </h2>
+
+  <form (ngSubmit)="save()" class="space-y-4">
+    <!-- Nombre -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Nombre completo</label>
+      <input
+        [(ngModel)]="fullName"
+        name="fullName"
+        required
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Nombre completo"
+      />
+    </div>
+
+    <!-- Número -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Número</label>
+      <input
+        type="number"
+        [(ngModel)]="number"
+        name="number"
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Número de camiseta"
+      />
+    </div>
+
+    <!-- Posición -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Posición</label>
+      <input
+        [(ngModel)]="position"
+        name="position"
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Ej: Base, Escolta, Alero"
+      />
+    </div>
+
+    <!-- Estatura -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Estatura (m)</label>
+      <input
+        type="number"
+        step="0.01"
+        [(ngModel)]="heightMeters"
+        name="heightMeters"
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Ej: 1.85"
+      />
+    </div>
+
+    <!-- Edad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Edad</label>
+      <input
+        type="number"
+        [(ngModel)]="age"
+        name="age"
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Edad"
+      />
+    </div>
+
+    <!-- Nacionalidad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Nacionalidad</label>
+      <input
+        [(ngModel)]="nationality"
+        name="nationality"
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Ej: Guatemala"
+      />
+    </div>
+
+    <!-- Equipo -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Equipo</label>
+      <select
+        [(ngModel)]="teamId"
+        name="teamId"
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option [ngValue]="null">-- Selecciona un equipo --</option>
+        <option *ngFor="let t of teams" [ngValue]="t.id">
+          {{ t.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end space-x-2">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Guardar
+      </button>
+      <button
+        type="button"
+        (click)="router.navigate(['/admin/players'])"
+        class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Notificación local -->
+<app-notification [message]="notification()"></app-notification>

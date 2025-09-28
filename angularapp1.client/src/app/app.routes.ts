@@ -54,6 +54,16 @@ export const routes: Routes = [
           ),
         canActivate: [AdminGuard],
         children: [
+
+          {
+            path: '',
+            pathMatch: 'full',
+            loadComponent: () =>
+              import('./pages/admin/admin-home.component').then(
+                m => m.AdminHomeComponent
+              ),
+            canActivate: [AdminGuard]
+          },
           {
             path: 'teams',
             loadComponent: () =>
@@ -67,7 +77,7 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/admin/teams/team-form.component').then(
                 m => m.TeamFormComponent
-              ),  
+              ),
             canActivate: [AdminGuard]
           },
           {
@@ -78,7 +88,8 @@ export const routes: Routes = [
               ),
             canActivate: [AdminGuard]
           },
-          /*{
+          // ---------------- JUGADORES ----------------
+          {
             path: 'players',
             loadComponent: () =>
               import('./pages/admin/players/player-list.component').then(
@@ -87,13 +98,29 @@ export const routes: Routes = [
             canActivate: [AdminGuard]
           },
           {
-            path: 'matches',
+            path: 'players/new',
             loadComponent: () =>
-              import('./pages/admin/matches/match-list.component').then(
-                m => m.MatchListComponent
+              import('./pages/admin/players/player-form.component').then(
+                m => m.PlayerFormComponent
               ),
             canActivate: [AdminGuard]
-          },*/
+          },
+          {
+            path: 'players/:id',
+            loadComponent: () =>
+              import('./pages/admin/players/player-form.component').then(
+                m => m.PlayerFormComponent
+              ),
+            canActivate: [AdminGuard]
+          },
+          /* {
+             path: 'matches',
+             loadComponent: () =>
+               import('./pages/admin/matches/match-list.component').then(
+                 m => m.MatchListComponent
+               ),
+             canActivate: [AdminGuard]
+           },*/
           { path: '', pathMatch: 'full', redirectTo: 'teams' }
         ]
       },
