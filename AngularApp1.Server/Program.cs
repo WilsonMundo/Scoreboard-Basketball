@@ -30,14 +30,15 @@ builder.Host.UseSerilog();
 
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContext<AppDbContext>(o =>
-o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+/*builder.Services.AddDbContext<AppDbContext>(o =>
+o.UseSqlServer(builder.Configuration.GetConnectionString("Default")));*/
 
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<GameProfile>();
+    cfg.AddProfile<TeamProfile>();
 });
-var cadenaConexion = builder.Configuration["SQLConnection"]
+var cadenaConexion = builder.Configuration.GetConnectionString("SQLConnection")
     ?? "";
 
 var jwtKey = builder.Configuration["Jwt:Key"]
@@ -142,7 +143,7 @@ var fwd = new ForwardedHeadersOptions
 };
 
 
-// Con proxies delante, confíar en los encabezados
+// Con proxies delante, confï¿½ar en los encabezados
 fwd.KnownNetworks.Clear();
 fwd.KnownProxies.Clear();
 app.UseForwardedHeaders(fwd);

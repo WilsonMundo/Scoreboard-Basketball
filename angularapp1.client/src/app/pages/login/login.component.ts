@@ -45,7 +45,7 @@ export class LoginComponent {
 
         // Ya se guarda el token en el AuthService
         this.router.navigate(['/']); // redirige al home
-        this.loading = false; // 🔥 aseguramos que se resetee el loading
+        this.loading = false; //  aseguramos que se resetee el loading
       },
       error: err => {
         this.error = 'Credenciales inválidas o error en el servidor';

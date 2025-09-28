@@ -19,28 +19,20 @@ import { JwtHelperService } from '@auth0/angular-jwt';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  /** Endpoint base para autenticación en la API */
   private apiUrl = `${environment.apiBase}/Autenticacion`;
-
-  /** Estado actual del token del usuario */
   private currentUserToken = new BehaviorSubject<LoginResponseDto | null>(null);
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private jwtHelper: JwtHelperService 
-  ) {}
+    private jwtHelper: JwtHelperService
+  ) {
+    const savedToken = JSON.parse(localStorage.getItem('authToken') || 'null');
+    if (savedToken) {
+      this.currentUserToken.next(savedToken);
+    }
+  }
 
-  /**
-   * Realiza el inicio de sesión contra la API.
-   *
-   * @param user Credenciales del usuario (`username`, `password`).
-   * @returns Observable con la respuesta que contiene el token JWT.
-   *
-   * Efectos secundarios:
-   * - Guarda el token en `localStorage`.
-   * - Actualiza el `BehaviorSubject` con el nuevo token.
-   */
   login(user: LoginRequestDto): Observable<LoginResponseDto> {
     return this.http.post<LoginResponseDto>(`${this.apiUrl}/login`, user).pipe(
       tap((token) => {
@@ -50,54 +42,65 @@ export class AuthService {
     );
   }
 
-  /**
-   * Cierra la sesión del usuario.
-   *
-   * - Llama al endpoint `/logout` en la API.
-   * - Si responde con éxito o error, limpia el `localStorage` y
-   *   reinicia el estado de sesión.
-   * - Redirige al usuario a la pantalla de login.
-   */
   logout() {
     this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
-      next: () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('refreshToken');
-        this.currentUserToken.next(null);
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('refreshToken');
-        this.currentUserToken.next(null);
-        this.router.navigate(['/login']);
-      }
+      next: () => this.clearSession(),
+      error: () => this.clearSession()
     });
   }
 
-  /**
-   * Obtiene el token JWT actual.
-   *
-   * @returns El token como `string`, o `null` si no existe.
-   *
-   * Busca primero en el `BehaviorSubject` y, si no hay valor,
-   * lo recupera desde `localStorage`.
-   */
+  private clearSession() {
+    localStorage.removeItem('authToken');
+    this.currentUserToken.next(null);
+    this.router.navigate(['/login']);
+  }
+
   getToken(): string | null {
     const token =
       this.currentUserToken.value ||
       JSON.parse(localStorage.getItem('authToken') || 'null');
     return token ? token.token : null;
   }
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return !!token && !this.jwtHelper.isTokenExpired(token);
+  }
 
-  /**
-   * Verifica si el usuario está autenticado.
-   *
-   * @returns `true` si existe un token válido y no está expirado.
-   */
   isAuthenticated(): boolean {
+    const token =
+      this.currentUserToken.value ||
+      JSON.parse(localStorage.getItem('authToken') || 'null');
+
+    if (!token) return false;
+
+    if (this.jwtHelper.isTokenExpired(token.token)) {
+      this.clearSession();
+      return false;
+    }
+
+    return true;
+  }
+  private getDecodedToken(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      return this.jwtHelper.decodeToken(token);
+    } catch {
+      return null;
+    }
+  }
+
+  /** Saber si es administrador */
+  isAdmin(): boolean {
     const token = this.getToken();
     if (!token) return false;
-    return !this.jwtHelper.isTokenExpired(token); // valida expiración
+
+    const decoded = this.jwtHelper.decodeToken(token);
+
+    // claim de .NET
+    return decoded && decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';
   }
+
+
+
 }

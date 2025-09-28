@@ -3,6 +3,7 @@
     public class TeamListRequest
     {
         public string? Q { get; set; }
+        public string? City { get; set; } 
         public int Page { get; set; } = 1; // 1-based
         public int Size { get; set; } = 20; // max 100
         public string? Sort { get; set; } = "name";

@@ -21,7 +21,7 @@ namespace AngularApp1.Server
                     if (data == null || (data is ResultAPI<object?> apiresult && apiresult.Result == null))
                         throw new ArgumentException("null response in code 201");
                     else
-                        return new ObjectResult(data.Message)
+                        return new ObjectResult(data.Result)
                         {
                             StatusCode = (int)HttpStatusCode.Created
                         };

@@ -12,8 +12,6 @@
 
         public string Password { get; set; } = null!;
 
-        public string Nit { get; set; } = null!;
-
         public string Telefono { get; set; } = null!;
 
         public bool FlagActivo { get; set; }

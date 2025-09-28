@@ -1,0 +1,61 @@
+<div class="p-6 max-w-lg mx-auto bg-white rounded shadow">
+  <h2 class="text-2xl font-bold mb-4">
+    {{ id ? 'Editar Equipo' : 'Nuevo Equipo' }}
+  </h2>
+
+  <form (ngSubmit)="save()" class="space-y-4">
+    <!-- Nombre -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Nombre</label>
+      <input
+        [(ngModel)]="name"
+        name="name"
+        required
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Nombre del equipo"
+      />
+    </div>
+
+    <!-- Ciudad -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Ciudad</label>
+      <input
+        [(ngModel)]="city"
+        name="city"
+        required
+        class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Ciudad del equipo"
+      />
+    </div>
+
+    <!-- Logo -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Logo</label>
+      <input
+        type="file"
+        (change)="onFileChange($event)"
+        class="w-full text-sm text-gray-600"
+      />
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end space-x-2">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Guardar
+      </button>
+      <button
+        type="button"
+        (click)="router.navigate(['/admin/teams'])"
+        class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Notificación local -->
+<app-notification [message]="notification()"></app-notification>

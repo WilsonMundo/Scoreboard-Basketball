@@ -3,16 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 # Angular cache
-.angular/cache/
+
+angularapp1.client/.angular/cache/
+
 # TypeScript build info
-*.tsbuildinfo
-# Angular compiler db
-angular-compiler.db
-angular-compiler.db-lock
-
-# Vite deps
-vite/deps/
-
 # User-specific files
 *.rsuser
 *.suo

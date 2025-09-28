@@ -43,6 +43,7 @@ namespace AngularApp1.Server.Controllers.Auth
             return Ok(new UserInfoModel { });
         }
         [HttpPost("logout")]
+        [AllowAnonymous]
         public IActionResult Logout()
         {
             Response.Cookies.Delete("AuthToken");
@@ -67,7 +68,11 @@ namespace AngularApp1.Server.Controllers.Auth
                     };
 
                     Response.Cookies.Append("AuthToken", userToken.Result.Token, cookieOptions);
-                    return Ok();
+                    return Ok(new
+                    {
+                        token = userToken.Result.Token,
+                        expiration = userToken.Result.Expiration
+                    });
 
                 }
                 else
