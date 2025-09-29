@@ -38,7 +38,7 @@ export class LoginComponent {
 
         // Si el backend devuelve vacío, evitamos que quede colgado
         if (!res) {
-          this.error = 'El servidor respondió sin datos';
+          this.error = 'El servidor respondió pero sin datos';
           this.loading = false;
           return;
         }
