@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
-import { LoginRequestDto } from '../models/dto/login-request.dto';
-import { LoginResponseDto } from '../models/dto/login-response.dto';
+import { LoginRequest } from '../models/dto/login-request.dto';
+import { LoginResponse } from '../models/dto/login-response.dto';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -20,7 +20,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = `${environment.apiBase}/Autenticacion`;
-  private currentUserToken = new BehaviorSubject<LoginResponseDto | null>(null);
+  private currentUserToken = new BehaviorSubject<LoginResponse | null>(null);
 
   constructor(
     private http: HttpClient,
@@ -33,8 +33,8 @@ export class AuthService {
     }
   }
 
-  login(user: LoginRequestDto): Observable<LoginResponseDto> {
-    return this.http.post<LoginResponseDto>(`${this.apiUrl}/login`, user).pipe(
+  login(user: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, user).pipe(
       tap((token) => {
         localStorage.setItem('authToken', JSON.stringify(token));
         this.currentUserToken.next(token);
