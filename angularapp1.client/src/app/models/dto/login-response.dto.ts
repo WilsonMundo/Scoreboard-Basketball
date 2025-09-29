@@ -1,4 +1,4 @@
-export class LoginResponseDto  {
+export class LoginResponse  {
     token: string;
   expiration: string;
 }
