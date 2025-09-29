@@ -9,7 +9,7 @@ namespace AngularApp1.Server.Domain.Interface
         Task AddAsync(TeamCatalog entity);
         Task UpdateAsync(TeamCatalog entity);
         Task DeleteAsync(TeamCatalog entity);
-        Task<(IReadOnlyList<TeamCatalog> Items, int Total)> ListAsync(string? q, int page, int size, string? sort);
+        Task<(IReadOnlyList<TeamCatalog> Items, int Total)> ListAsync(string? q, int page, int size, string? sort, string? city = null);
         Task SaveChangesAsync();
     }
 }

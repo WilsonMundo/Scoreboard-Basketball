@@ -55,9 +55,9 @@ namespace AngularApp1.Server.Application.Services.Auth
                 claimsList.Add(new Claim(ClaimTypes.Role, userInfo.rolAdmin));
             }
             claims = claimsList.ToArray();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["llavejwt"] ?? throw new ArgumentNullException("Error no existe llaveJWT")));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"] ?? throw new ArgumentNullException("Error no existe llaveJWT")));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiration = DateTime.UtcNow.AddDays(15);
+            var expiration = DateTime.UtcNow.AddHours(1);
             JwtSecurityToken token = new JwtSecurityToken(
                  issuer: null,
                  audience: null,
@@ -91,7 +91,7 @@ namespace AngularApp1.Server.Application.Services.Auth
                     Direccion = user.direccion,
                     Email = user.Login,
                     Name = user.name,
-                    Nit = "1234",
+                  
                     Telefono = user.telefono,
                     
                 };
@@ -101,7 +101,7 @@ namespace AngularApp1.Server.Application.Services.Auth
                 string password = HashPassword(user.Password, dbUsuario);
                 dbUsuario.Password = password;
                 dbUsuario.FlagActivo = true;
-                dbUsuario.RolId = 1;
+                dbUsuario.RolId = 2;//user
                 await _IUsuario.AddAsync(dbUsuario);
                 result.Ok(StatusHttpResponse.OK);
 

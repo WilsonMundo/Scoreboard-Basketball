@@ -2,11 +2,19 @@
   <div class="text-lg font-semibold">Mi Tablero</div>
   <nav class="space-x-4">
     <a routerLink="/" routerLinkActive="underline font-semibold" [routerLinkActiveOptions]="{ exact: true }"
-       class="text-slate-200 hover:text-white">Inicio</a>
+      class="text-slate-200 hover:text-white">Inicio</a>
     <a routerLink="/games/setup" routerLinkActive="underline font-semibold"
-       class="text-slate-200 hover:text-white">Crear juego</a>
+      class="text-slate-200 hover:text-white">Crear juego</a>
     <a routerLink="/games/list" routerLinkActive="underline font-semibold"
-       class="text-slate-200 hover:text-white">Listar juego</a>
+      class="text-slate-200 hover:text-white">Listar juego</a>
+
+    <!-- Solo admins -->
+    <a *ngIf="authService.isAdmin()" routerLink="/admin"
+      routerLinkActive="underline font-semibold"
+      class="text-slate-200 hover:text-white">
+      Administración
+    </a>
+    <a (click)="logout()" style="cursor: pointer;">Cerrar sesión</a>
   </nav>
 </header>
 

@@ -3,6 +3,6 @@
 //  apiBase: (typeof window !== 'undefined') ? window.location.origin : ''
 //};
 export const environment = {
-  production: false,
-  apiBase: "http://localhost:5183" 
+  production: true,
+  apiBase: '/api/v1' 
 };

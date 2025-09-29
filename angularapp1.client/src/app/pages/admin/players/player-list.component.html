@@ -1,0 +1,85 @@
+<div class="p-4">
+  <app-notification [message]="notification()"></app-notification>
+
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Listado de Jugadores</h2>
+
+    <div class="flex gap-2">
+      <!-- Búsqueda -->
+      <input [ngModel]="search()" (ngModelChange)="search.set($event)" (keyup.enter)="onSearch()"
+        placeholder="Buscar por nombre o nacionalidad" class="border px-3 py-2 rounded w-64" />
+
+      <button (click)="onSearch()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Buscar
+      </button>
+
+      <!-- Filtro por equipo -->
+      <select [ngModel]="filterTeam()" (ngModelChange)="onFilterTeam($event)" class="border px-3 py-2 rounded">
+        <option [ngValue]="null">Todos los equipos</option>
+        <option *ngFor="let team of allTeams" [ngValue]="team.id">{{ team.name }}</option>
+      </select>
+
+      <!-- Nuevo jugador -->
+      <a routerLink="new" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        Nuevo Jugador
+      </a>
+    </div>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading()" class="text-gray-500">Cargando...</div>
+
+  <!-- Tabla -->
+  <table *ngIf="players.length > 0 && !loading()" class="min-w-full bg-white border border-gray-300">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="px-4 py-2 text-left">ID</th>
+        <th class="px-4 py-2 text-left">Nombre</th>
+        <th class="px-4 py-2 text-left">Número</th>
+        <th class="px-4 py-2 text-left">Posición</th>
+        <th class="px-4 py-2 text-left">Estatura</th>
+        <th class="px-4 py-2 text-left">Edad</th>
+        <th class="px-4 py-2 text-left">Nacionalidad</th>
+        <th class="px-4 py-2 text-left">Equipo</th>
+        <th class="px-4 py-2 text-left">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let player of players" class="border-t">
+        <td class="px-4 py-2">{{ player.id }}</td>
+        <td class="px-4 py-2">{{ player.fullName }}</td>
+        <td class="px-4 py-2">{{ player.number }}</td>
+        <td class="px-4 py-2">{{ player.position }}</td>
+        <td class="px-4 py-2">{{ player.heightMeters }} m</td>
+        <td class="px-4 py-2">{{ player.age }}</td>
+        <td class="px-4 py-2">{{ player.nationality }}</td>
+        <td class="px-4 py-2">{{ player.teamName }}</td>
+        <td>
+          <button (click)="editPlayer(player.id)" class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+            Editar
+          </button>
+          <button (click)="deletePlayer(player.id)"
+            class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-2">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Sin resultados -->
+  <div *ngIf="!loading() && players.length === 0" class="text-gray-500 mt-4">
+    No hay jugadores registrados.
+  </div>
+
+  <!-- Paginación -->
+  <div class="flex justify-between mt-4" *ngIf="total() > size">
+    <button (click)="prevPage()" [disabled]="page() === 1" class="px-3 py-1 bg-gray-200 rounded">
+      Anterior
+    </button>
+    <span>Página {{ page() }} de {{ Math.ceil(total() / size) }}</span>
+    <button (click)="nextPage()" [disabled]="page() * size >= total()" class="px-3 py-1 bg-gray-200 rounded">
+      Siguiente
+    </button>
+  </div>
+</div>

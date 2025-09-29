@@ -38,7 +38,7 @@ namespace AngularApp1.Server.Infrastructure.Repository
         }
 
 
-        public async Task<(IReadOnlyList<TeamCatalog> Items, int Total)> ListAsync(string? q, int page, int size, string? sort)
+        public async Task<(IReadOnlyList<TeamCatalog> Items, int Total)> ListAsync(string? q, int page, int size, string? sort, string? city = null)
         {
             page = Math.Max(1, page);
             size = Math.Clamp(size, 1, 100);
@@ -51,6 +51,11 @@ namespace AngularApp1.Server.Infrastructure.Repository
             {
                 var like = q.Trim();
                 query = query.Where(t => t.Name.Contains(like) || (t.City != null && t.City.Contains(like)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                query = query.Where(t => t.City == city);
             }
 
 

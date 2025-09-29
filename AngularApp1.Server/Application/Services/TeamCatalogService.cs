@@ -139,11 +139,11 @@ namespace AngularApp1.Server.Application.Services
             var result = new ResultAPI<PagedResult<TeamDto>>(true);
             try
             {
-                var (items, total) = await _repo.ListAsync(req.Q, req.Page, req.Size, req.Sort);
+                var (items, total) = await _repo.ListAsync(req.Q, req.Page, req.Size, req.Sort, req.City);
                 var dtoItems = items.Select(_mapper.Map<TeamDto>).ToList();
                 var page = new PagedResult<TeamDto> { Page = Math.Max(1, req.Page), Size = Math.Clamp(req.Size, 1, 100), Total = total, Items = dtoItems };
                 result.OkData(StatusHttpResponse.OK, page);
-                return result;
+                return result;  
             }
             catch (Exception ex)
             {

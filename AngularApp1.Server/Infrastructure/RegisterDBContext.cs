@@ -46,11 +46,7 @@ namespace AngularApp1.Server.Infrastructure
                     .IsUnicode(false)
                     .UseCollation("Latin1_General_100_BIN2")
                     .HasColumnName("name");
-                entity.Property(e => e.Nit)
-                    .HasMaxLength(8000)
-                    .IsUnicode(false)
-                    .UseCollation("Latin1_General_100_BIN2")
-                    .HasColumnName("nit");
+                
                 entity.Property(e => e.Password)
                     .IsUnicode(false)
                     .HasColumnName("password");
