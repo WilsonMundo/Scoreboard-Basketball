@@ -74,3 +74,14 @@ El usuario administrador, podra realizar diferentes gestiones(Equipo, Judadores,
 
 ![Crear jugador](CrearJ.jpeg)
 
+### Gestionar partido juego
+
+-Clic en listar juego
+Muestra en pantalla el panel de control del juego
+-Iniciar, pausar, resetear y finalizar partidos
+-Agregar y quitar faltas
+-Agregar y quitar puntos
+-Avanzar cuartos manualmente 
+Muestra en pantalla puntos, falta de cada cuarto
+![Crear jugador](GestionPartido.png)
+
