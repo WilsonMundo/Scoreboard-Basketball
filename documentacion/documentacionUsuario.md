@@ -85,3 +85,13 @@ Muestra en pantalla el panel de control del juego
 Muestra en pantalla puntos, falta de cada cuarto
 ![Crear jugador](GestionPartido.png)
 
+### Listar juegos
+- Clic en Listar juego
+Muestra en pantalla los partidos:
+- No. de Juego
+- Equipos que jugaron
+- Marcador
+- Estado del juego (Activo o finalizado)
+- Fecha
+
+![Crear jugador](ListarJuegos.png)
