@@ -1,5 +1,9 @@
 # Scoreboard-Basketball
 Proyecto de universidad Scoreboard de Basketball
+# url del proyecto
+
+https://scoreboard.mundoalonzo.com/
+
 ```
 /AngularApp1
 ├─ AngularApp1.server/                  # API ASP.NET Core 8
