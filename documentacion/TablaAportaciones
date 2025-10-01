@@ -1,0 +1,23 @@
+# Fase II
+
+## Aportaciones del Equipo
+
+| Nombre y Apellido   | Aporte                                                                 | Porcentaje |
+|----------------------|------------------------------------------------------------------------|------------|
+| **Wilson Mundo**     | Backend                                                                | 40%        |
+| **Jefferson Lopez**  | Frontend (Autenticación y autorización, Gestión de equipo)             | 30%        |
+| **Victor Quino**     | Frontend (Gestión de Jugadores, Gestión de partidos)                   | 30%        |
+
+---
+
+## Usuarios para Pruebas
+
+- **Administrador**  
+  - Acceso: Puede gestionar tablero de Administración  
+  - Usuario: `admin@admin.com`  
+  - Contraseña: `smart`  
+
+- **Usuario Normal**  
+  - Acceso: Únicamente ver tablero de resultados  
+  - Usuario: `info@info.com`  
+  - Contraseña: `smart`  
